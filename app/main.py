@@ -1,16 +1,13 @@
-from logging import getLogger
-from fastapi import APIRouter
+from fastapi import APIRouter, FastAPI
 import time
 
-from ml.filtering import abuse_filtering
-from ml.inference import loadchat
-
-logging = getLogger(__name__)
-router = APIRouter()
+from filtering import abuse_filtering
+from inference import loadchat
+app = FastAPI()
 
 
 # 문자 챗봇
-@router.get("/chat_bot")
+@app.get("/chat_bot")
 def chatbot(memberId: int, weId: int, chatRequest: str = ''):
     print('memberId', memberId, 'weId', weId, "request,", chatRequest)
     start = time.time()
@@ -36,3 +33,5 @@ def chatbot(memberId: int, weId: int, chatRequest: str = ''):
     print('chat 시간', chat - start)
     return {"response": sentence, "filter": 0}
 
+
+# uvicorn app.main:app --reload --host=0.0.0.0 --port=8002
