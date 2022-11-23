@@ -1,7 +1,8 @@
+import os
+
+import numpy as np
 import onnxruntime as ort
 from transformers import AutoTokenizer
-import numpy as np
-import os
 
 USE_GPU = os.getenv('USE_GPU', 0)
 if USE_GPU == 0:
@@ -12,7 +13,7 @@ else:
 model_name = 'beomi/kcbert-base'
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 unsmile_labels = ['여성/가족', '남성', '성소수자', '인종/국적', '연령', '지역', '종교', '기타 혐오', '악플/욕설', 'clean']
-abuse_filter = ort.InferenceSession('../models/abuse_filtering_model.onnx', providers=ep)
+abuse_filter = ort.InferenceSession('./models/abuse_filtering_model.onnx', providers=ep)
 
 
 def abuse_filtering(text, text_or_voice):

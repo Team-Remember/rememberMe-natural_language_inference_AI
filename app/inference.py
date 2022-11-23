@@ -1,19 +1,19 @@
+import ssl
+import certifi
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
-import urllib3
+context = ssl.create_default_context(cafile=certifi.where())
+# context = ssl.create_default_context(cafile="/usr/share/elasticsearch/config/certs/http_ca.crt")
+context.check_hostname = False
+context.verify_mode = ssl.CERT_NONE
 
 model = SentenceTransformer('jhgan/ko-sroberta-multitask')
 
-# url = 'http://ec2-3-19-14-184.us-east-2.compute.amazonaws.com:9200/'
-# url = 'https://search-remember-arfkueaizgtcrbhtnynyqihisu.us-east-2.es.amazonaws.com:9200'
-# url = 'https://34.64.46.1:9200/'
-# url ='http://localhost:9200/'
-url = 'https://4d6a-119-194-163-123.jp.ngrok.io'
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+url = 'https://34.64.69.252:9200/'
 
 
 def loadchat(member_id, we_id, textdata):
-    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'bTTMK9r-rH*HRj7hdVwV'), verify_certs=False)
+    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'MAYQ5D+cLM6x5y3V7rxP'), ssl_context=context, request_timeout=10, verify_certs=False)
     index = "chat_bot"
     textembeding = model.encode(textdata)
     s_body = {

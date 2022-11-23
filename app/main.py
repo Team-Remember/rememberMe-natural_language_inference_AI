@@ -1,8 +1,10 @@
-from fastapi import APIRouter, FastAPI
 import time
 
-from filtering import abuse_filtering
-from inference import loadchat
+from fastapi import FastAPI
+
+from app.filtering import abuse_filtering
+from app.inference import loadchat
+
 app = FastAPI()
 
 
