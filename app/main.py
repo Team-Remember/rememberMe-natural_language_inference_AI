@@ -2,8 +2,8 @@ import time
 
 from fastapi import FastAPI
 
-from app.filtering import abuse_filtering
-from app.inference import loadchat
+from filtering import abuse_filtering
+from inference import loadchat
 
 app = FastAPI()
 

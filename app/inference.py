@@ -3,7 +3,6 @@ import certifi
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 context = ssl.create_default_context(cafile=certifi.where())
-# context = ssl.create_default_context(cafile="/usr/share/elasticsearch/config/certs/http_ca.crt")
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
 
@@ -13,7 +12,7 @@ url = 'https://34.64.69.252:9200/'
 
 
 def loadchat(member_id, we_id, textdata):
-    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'MAYQ5D+cLM6x5y3V7rxP'), ssl_context=context, request_timeout=10, verify_certs=False)
+    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'uYaVMCVhxfZe6IPAA7zT'), ssl_context=context, request_timeout=10, verify_certs=False)
     index = "chat_bot"
     textembeding = model.encode(textdata)
     s_body = {

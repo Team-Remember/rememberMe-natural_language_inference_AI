@@ -11,5 +11,5 @@ COPY ./app /app
 # docker images
 # docker run -it --rm -p 8000:80 -e MAX_WORKERS=2 nk3466/nl_inference:0.0.1
 # docker image prune
-# docker push
+#docker push nk3466/nl_train:0.0.3
 # docker exec -it --user root 0e08 /bin/bash
