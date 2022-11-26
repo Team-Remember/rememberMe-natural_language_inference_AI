@@ -1,7 +1,9 @@
 import ssl
+
 import certifi
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
+
 context = ssl.create_default_context(cafile=certifi.where())
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
@@ -12,7 +14,8 @@ url = 'https://34.64.69.252:9200/'
 
 
 def loadchat(member_id, we_id, textdata):
-    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'uYaVMCVhxfZe6IPAA7zT'), ssl_context=context, request_timeout=10, verify_certs=False)
+    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'remember'), ssl_context=context, request_timeout=10,
+                       verify_certs=False)
     index = "chat_bot"
     textembeding = model.encode(textdata)
     s_body = {
@@ -20,20 +23,11 @@ def loadchat(member_id, we_id, textdata):
             "script_score": {
                 "query": {
                     "bool": {
-                        "should": [
-                            {
-                                "match_phrase": {
-                                    "member_id": member_id
-                                }
-                            },
-                            {
-                                "match_phrase": {
-                                    "we_id": we_id
-
-                                }
-                            }
+                        "must": [
+                            {"match": {"member_id": member_id}},
+                            {"match": {"we_id": we_id}}
                         ]
-                    },
+                    }
                 },
                 "script": {
                     "source": "cosineSimilarity(params.query_vector, 'chatvector') + 1.0",
@@ -44,7 +38,7 @@ def loadchat(member_id, we_id, textdata):
     }
 
     res = es.search(index=index, body=s_body)
-
+    print(res['hits']['hits'])
     if len(res['hits']['hits']) == 0:
         return {'return_sentence': "챗봇의 데이터가 충분하지 않습니다. 카카오톡 데이터를 넣어주세요!", 'filtering': 1}
 
