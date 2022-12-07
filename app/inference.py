@@ -4,17 +4,17 @@ import certifi
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 
+import config
+
 context = ssl.create_default_context(cafile=certifi.where())
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
 
 model = SentenceTransformer('jhgan/ko-sroberta-multitask')
 
-url = 'https://34.64.69.252:9200/'
-
 
 def loadchat(member_id, we_id, textdata):
-    es = Elasticsearch(hosts=[url], http_auth=('elastic', 'remember'), ssl_context=context, request_timeout=10,
+    es = Elasticsearch(hosts=[config.ELASTIC_CONFIG['url']], http_auth=(config.ELASTIC_CONFIG['user'], config.ELASTIC_CONFIG['password']), ssl_context=context, request_timeout=10,
                        verify_certs=False)
     index = "chat_bot"
     textembeding = model.encode(textdata)
@@ -38,7 +38,6 @@ def loadchat(member_id, we_id, textdata):
     }
 
     res = es.search(index=index, body=s_body)
-    print(res['hits']['hits'])
     if len(res['hits']['hits']) == 0:
         return {'return_sentence': "챗봇의 데이터가 충분하지 않습니다. 카카오톡 데이터를 넣어주세요!", 'filtering': 1}
 

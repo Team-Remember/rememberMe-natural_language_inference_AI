@@ -1,3 +1,4 @@
 ml/__pycache__/
 app/__pycache__/
 models/abuse_filtering_model.onnx
+app/config.py
